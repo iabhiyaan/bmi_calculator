@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import './icon_content.dart';
-import './card_widget.dart';
-import './util.dart';
-import './round_icon_button.dart';
+import '../components/icon_content.dart';
+import '../components/card_widget.dart';
+import '../components/round_icon_button.dart';
+import '../components/bottom_button.dart';
+import '../pages/result_page.dart';
+
+import '../util.dart';
+import '../helpers.dart';
 
 enum Gender { male, female }
 
@@ -192,16 +196,22 @@ class _InputPageState extends State<InputPage> {
               ],
             ),
           ),
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text('Calculate Your BMI', style: TextStyle(fontSize: 25.0))
-              ],
-            ),
-            width: double.infinity,
-            color: bottomContainerColor,
-            height: bottomContainerHeight,
+          BottomButton(
+            label: 'Calculate',
+            onTap: () {
+              BMICalculator calc =
+                  BMICalculator(height: height, weight: weight);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ResultPage(
+                    bmiResult: calc.calculateBMI(),
+                    resultText: calc.getResult(),
+                    interpretation: calc.getInterpretation(),
+                  ),
+                ),
+              );
+            },
           ),
         ],
       ),
